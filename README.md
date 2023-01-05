@@ -5,7 +5,7 @@
 - node.js
 - Express
 - Postgres
-- React.js
+- React.js (using vite)
 - JWT
 - Hooks
 - React-auth-kit
