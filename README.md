@@ -5,6 +5,7 @@
 - node.js
 - Express
 - Postgres
+- Jasmine
 - React.js (using vite)
 - JWT
 - Hooks
