@@ -3,12 +3,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import AuthController from "../../controller/auth.controller";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../context/userContext";
-import { useContext } from "react";
+import { useSignIn } from "react-auth-kit";
 const _auth = new AuthController();
 
 const LoginForm = () => {
-  const {setIsAuth} = useContext(UserContext)
+  const signIn = useSignIn()
   const [name, setUserName] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState('');
@@ -18,7 +17,12 @@ const LoginForm = () => {
     try {
       e.preventDefault();
       const res = await _auth.login(name,pass);
-      setIsAuth(true)
+      signIn({
+        token:res.data.token,
+        expiresIn:60,
+        tokenType:"Bearer",
+        authState:{username:name}
+      })
       navigate('/')
     } catch (error) {
       setError(error.response.data)

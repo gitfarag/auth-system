@@ -2,20 +2,31 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/home/home'
 import Login from './pages/login/login'
-import { UserContext } from './context/userContext'
-import { useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { AuthProvider } from 'react-auth-kit'
+import { RequireAuth } from 'react-auth-kit'
 
 function App() {
-  const {isAuth} = useContext(UserContext)
   return (
+    <AuthProvider
+    authType='cookie'
+    authName='_auth'
+    cookieDomain={window.location.hostname}
+    cookieSecure={false}
+    >
+
     <BrowserRouter>
       <Routes>
-        <Route path='/' 
-        element={ isAuth?<Home/>:<Navigate to={'/auth/login'}/>} />
-        <Route path='/auth/:type' element={<Login />} />
+        <Route 
+        path='/' 
+        element={<RequireAuth loginPath='/auth/login'> <Home/> </RequireAuth>}/>
+
+        <Route
+         path='/auth/:type' 
+         element={<Login />} />
       </Routes>
     </BrowserRouter>
+
+     </AuthProvider>
   )
 }
 
